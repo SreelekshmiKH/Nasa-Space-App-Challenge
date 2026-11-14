@@ -1,5 +1,5 @@
 /**
- * THE OBSERVATORY — Ghost Fleet Archaeology
+ * GHOST FLEET — Cosmic Sentinel Archaeology
  * Space/Cosmic Star Chart Controller
  */
 
@@ -463,7 +463,7 @@ function openDrawer(item) {
              alt="${item.name}" 
              onerror="handleImageFallback(this)" />
       </div>
-      <div class="lens-caption mono">OBSERVATORY SENSOR FEED // RETICLE 01</div>
+      <div class="lens-caption mono">GHOST FLEET SENSOR FEED // RETICLE 01</div>
     </div>
 
     <div class="dossier-card">
