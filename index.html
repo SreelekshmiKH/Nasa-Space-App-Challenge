@@ -4,32 +4,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ghost Fleet of the Solar System</title>
+  <title>THE OBSERVATORY // Ghost Fleet Archaeology</title>
+  
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
-  <header>
-    <h1> GHOST FLEET ARCHAEOLOGY</h1>
-    <p>Exploring humanity's dormant scientific sentinels across space.</p>
-    <div class="toggle-buttons">
-      <button id="btn-moon" class="active" onclick="switchPlanet('moon')">The Moon</button>
-      <button id="btn-mars" onclick="switchPlanet('mars')">Mars</button>
+<body class="observatory-body">
+  <!-- Observatory Command Header -->
+  <header class="observatory-header">
+    <div class="header-main">
+      <div class="branding">
+        <div class="observatory-insignia" aria-hidden="true">
+          <span class="insignia-ring"></span>
+          <span class="insignia-reticle"></span>
+          <span class="insignia-core"></span>
+        </div>
+        <div class="title-group">
+          <div class="eyebrow mono">COSMIC RECONNAISSANCE SYSTEM // DEEP SPACE ARCHAEOLOGY</div>
+          <h1>THE OBSERVATORY</h1>
+          <p class="tagline body-md">Exploring humanity's dormant scientific sentinels across space.</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="telemetry-pill">
+          <span class="pulse-beacon"></span>
+          <div class="telemetry-info">
+            <span class="telemetry-label mono">OPTICAL ARRAY</span>
+            <span class="telemetry-value mono" id="optical-status">ONLINE // RETICLE LOCK</span>
+          </div>
+        </div>
+
+        <div class="toggle-buttons" role="group" aria-label="Celestial Body Selection">
+          <button id="btn-moon" class="toggle-btn active" onclick="switchPlanet('moon')" title="Switch to Lunar Star Chart">
+            <span class="btn-dot"></span>
+            <span class="btn-text">THE MOON</span>
+            <span class="btn-badge mono" id="badge-moon-count">12 SITES</span>
+          </button>
+          <button id="btn-mars" class="toggle-btn" onclick="switchPlanet('mars')" title="Switch to Martian Star Chart">
+            <span class="btn-dot"></span>
+            <span class="btn-text">MARS</span>
+            <span class="btn-badge mono" id="badge-mars-count">10 SITES</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Star Chart Telemetry Ribbon -->
+    <div class="star-chart-ribbon">
+      <div class="ribbon-item">
+        <span class="ribbon-label mono">SECTOR:</span>
+        <span class="ribbon-val mono" id="current-sector">LUNAR SURFACE [SECTOR-L1]</span>
+      </div>
+      <div class="ribbon-item">
+        <span class="ribbon-label mono">RETICLE COORDS:</span>
+        <span class="ribbon-val mono" id="mouse-coords">LAT: +00.00° // LON: +00.00°</span>
+      </div>
+      <div class="ribbon-item">
+        <span class="ribbon-label mono">CATALOGED:</span>
+        <span class="ribbon-val mono" id="sentinel-counter">12 SENTINELS ACTIVE</span>
+      </div>
+      <div class="ribbon-item filter-container">
+        <span class="ribbon-label mono">FILTER:</span>
+        <div class="search-input-wrapper">
+          <input type="text" id="sentinel-search" placeholder="Search sentinels..." oninput="handleSearch(this.value)" autocomplete="off" />
+          <button class="clear-search-btn hidden" id="clear-search-btn" onclick="clearSearch()" title="Clear filter">✕</button>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- Interactive Map Canvas -->
-  <div id="map"></div>
+  <!-- Interactive Map Canvas Container -->
+  <main class="map-viewport-wrapper">
+    <!-- Observatory Star Chart Viewport Reticle Frames -->
+    <div class="reticle-frame" aria-hidden="true">
+      <div class="reticle-bracket top-left"></div>
+      <div class="reticle-bracket top-right"></div>
+      <div class="reticle-bracket bottom-left"></div>
+      <div class="reticle-bracket bottom-right"></div>
+      
+      <div class="reticle-axis axis-horizontal"></div>
+      <div class="reticle-axis axis-vertical"></div>
 
-  <!-- Artifact Detail Drawer / Modal -->
-  <div id="artifact-drawer" class="drawer hidden">
-    <button class="close-btn" onclick="closeDrawer()">✕</button>
-    <div id="drawer-content">
+      <!-- Observatory Star Compass HUD -->
+      <div class="hud-compass">
+        <div class="compass-dial"></div>
+        <div class="compass-label mono">ORBITAL AZIMUTH 034°</div>
+      </div>
+    </div>
+
+    <!-- Leaflet Map Mount Point -->
+    <div id="map" tabindex="0" aria-label="Planetary Star Chart Map"></div>
+
+    <!-- Sentinel Quick Navigator Dock (Horizontal Star Chart Carousel) -->
+    <section class="sentinel-navigator-dock" id="sentinel-dock" aria-label="Sentinel Selector Tray">
+      <div class="dock-bar">
+        <div class="dock-header">
+          <span class="dock-icon">✦</span>
+          <span class="dock-title mono">SURFACE SENTINEL ARRAY</span>
+          <span class="dock-count mono" id="dock-counter">[12]</span>
+        </div>
+        <div class="dock-instructions mono">SELECT TO ACQUIRE TARGET</div>
+      </div>
+      <div class="dock-chips" id="dock-chips" role="tablist">
+        <!-- Dynamically rendered sentinel chips -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Artifact Detail Dossier Drawer -->
+  <aside id="artifact-drawer" class="observatory-drawer drawer-hidden" aria-label="Sentinel Dossier Drawer">
+    <div class="drawer-header-bar">
+      <div class="dossier-tag mono">
+        <span class="dossier-pulse"></span>
+        <span>SENTINEL TELEMETRY DOSSIER</span>
+      </div>
+      <button class="close-btn" onclick="closeDrawer()" title="Close Dossier" aria-label="Close Dossier">✕</button>
+    </div>
+
+    <div id="drawer-content" class="drawer-scroll-body">
       <!-- Content populated dynamically by JavaScript -->
     </div>
-  </div>
+
+    <!-- Dossier Footer Navigation -->
+    <div class="drawer-footer-nav" id="drawer-footer-nav">
+      <button class="nav-step-btn" id="btn-prev-artifact" onclick="navigateArtifact(-1)" title="Previous Sentinel">
+        ◀ PREV
+      </button>
+      <button class="nav-focus-btn" id="btn-focus-map" onclick="focusCurrentArtifact()" title="Center Map on Sentinel">
+        🎯 LOCK TARGET
+      </button>
+      <button class="nav-step-btn" id="btn-next-artifact" onclick="navigateArtifact(1)" title="Next Sentinel">
+        NEXT ▶
+      </button>
+    </div>
+  </aside>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

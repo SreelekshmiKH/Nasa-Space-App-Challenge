@@ -1,116 +1,1228 @@
-* {
+/* ==========================================================================
+   THE OBSERVATORY — Design System & Stylesheet
+   Space/Cosmic style | 2020s Contemporary Era
+   ========================================================================== */
+
+:root {
+  /* Exact Colors Palette */
+  --color-primary: #020308;
+  --color-secondary: #c9d2e8;
+  --color-tertiary: #ff6a5a;
+  --color-accent: #c95a4e;
+  --color-surface: #0a0d18;
+
+  /* Alpha / Glass surface tints */
+  --color-surface-glass: rgba(10, 13, 24, 0.82);
+  --color-surface-glass-heavy: rgba(10, 13, 24, 0.94);
+  --color-surface-card: rgba(15, 20, 36, 0.75);
+  --color-border-subtle: rgba(201, 210, 232, 0.16);
+  --color-border-bright: rgba(201, 210, 232, 0.4);
+  --color-glow-coral: rgba(255, 106, 90, 0.4);
+  --color-glow-starlight: rgba(201, 210, 232, 0.25);
+
+  /* Typography Specifications */
+  --font-h1: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+
+  /* Exact Rounded Specifications */
+  --rounded-sm: 4px;
+  --rounded-md: 8px;
+  --rounded-lg: 16px;
+
+  /* Exact Spacing Specifications */
+  --spacing-sm: 1rem;   /* 16px */
+  --spacing-md: 2rem;   /* 32px */
+  --spacing-lg: 4rem;   /* 64px */
+
+  /* Shadows & Neumorphic cosmic wells */
+  --shadow-glass: 0 8px 32px 0 rgba(2, 3, 8, 0.85);
+  --shadow-inset-well: inset 0 2px 4px rgba(2, 3, 8, 0.9), 0 1px 0 rgba(201, 210, 232, 0.08);
+  --shadow-glow-tertiary: 0 0 18px var(--color-glow-coral);
+  --shadow-drawer: -12px 0 45px rgba(2, 3, 8, 0.95), 0 0 30px rgba(255, 106, 90, 0.15);
+
+  /* Transition curves */
+  --transition-smooth: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.15s ease-out;
+}
+
+/* ==========================================================================
+   Base & Reset
+   ========================================================================== */
+
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #0b0f17;
-  color: #fff;
-  overflow-x: hidden;
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-header {
-  padding: 15px;
-  text-align: center;
-  background: #15192b;
-  border-bottom: 2px solid #2d3553;
+body.observatory-body {
+  display: flex;
+  flex-direction: column;
+  background: 
+    radial-gradient(circle at 50% 0%, rgba(255, 106, 90, 0.09) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 85%, rgba(201, 210, 232, 0.04) 0%, transparent 50%),
+    var(--color-primary);
+  position: relative;
 }
 
-header h1 {
-  letter-spacing: 2px;
-  color: #4db6ac;
-  font-size: 1.5rem;
+/* Cosmic Star dust subtle background shimmer */
+body.observatory-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, var(--color-secondary), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 140px 170px, rgba(201, 210, 232, 0.6), rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 280px 80px, rgba(255, 106, 90, 0.8), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 420px 240px, var(--color-secondary), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 600px 120px, rgba(201, 210, 232, 0.5), rgba(0,0,0,0));
+  background-size: 700px 700px;
+  opacity: 0.28;
+  z-index: 0;
 }
 
-header p {
-  color: #a0aabf;
-  font-size: 0.85rem;
-  margin-top: 4px;
+/* Typography Helper Classes */
+h1 {
+  font-family: var(--font-h1);
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(201, 210, 232, 0.35);
 }
 
-.toggle-buttons {
-  margin-top: 10px;
+.body-md {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-secondary);
 }
 
-.toggle-buttons button {
-  background: #1f263e;
-  color: #fff;
-  border: 1px solid #4db6ac;
+.mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   Header: Cosmic Observatory Command Post (Flexbox + Backdrop Filter)
+   ========================================================================== */
+
+.observatory-header {
+  position: relative;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid var(--color-border-subtle);
+  box-shadow: 0 4px 24px rgba(2, 3, 8, 0.7);
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem var(--spacing-sm);
+  gap: var(--spacing-sm);
+}
+
+/* Observatory Insignia & Brand */
+.branding {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.observatory-insignia {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.insignia-ring {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px dashed var(--color-secondary);
+  animation: reticle-rotate 25s linear infinite;
+  opacity: 0.6;
+}
+
+.insignia-reticle {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border-bright);
+  box-shadow: 0 0 10px rgba(201, 210, 232, 0.25);
+}
+
+.insignia-core {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-tertiary);
+  box-shadow: 0 0 12px var(--color-tertiary);
+  animation: status-pulse 2s infinite ease-in-out;
+}
+
+.title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.eyebrow {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--color-tertiary);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.tagline {
+  color: rgba(201, 210, 232, 0.78);
+  font-size: 0.88rem;
+}
+
+/* Header Controls & Telemetry */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.telemetry-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 6px 14px;
-  margin: 0 4px;
-  border-radius: 4px;
-  cursor: pointer;
+  background: rgba(10, 13, 24, 0.6);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--rounded-md);
+  box-shadow: var(--shadow-inset-well);
+  backdrop-filter: blur(8px);
+}
+
+.pulse-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #36e392;
+  box-shadow: 0 0 10px #36e392;
+  animation: status-pulse 1.8s infinite ease-in-out;
+}
+
+.telemetry-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.telemetry-label {
+  font-size: 0.65rem;
+  color: rgba(201, 210, 232, 0.6);
+  letter-spacing: 0.1em;
+}
+
+.telemetry-value {
+  font-size: 0.78rem;
+  color: var(--color-secondary);
   font-weight: bold;
 }
 
-.toggle-buttons button.active {
-  background: #4db6ac;
-  color: #0b0f17;
+/* Toggle Buttons (Glass Effect + Neumorphism + Transitions) */
+.toggle-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(2, 3, 8, 0.7);
+  padding: 4px;
+  border-radius: var(--rounded-md);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-inset-well);
 }
 
-#map {
-  width: 100vw;
-  height: calc(100vh - 110px);
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--color-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--rounded-sm);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  transition: var(--transition-smooth);
 }
 
-/* Default Moon Background */
-#map {
-  width: 100vw;
-  height: calc(100vh - 85px);
-  background: #0b0f17;
+.toggle-btn .btn-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(201, 210, 232, 0.4);
+  transition: var(--transition-smooth);
 }
 
-.drawer-hidden {
+.toggle-btn .btn-badge {
+  font-size: 0.68rem;
+  padding: 2px 5px;
+  border-radius: var(--rounded-sm);
+  background: rgba(201, 210, 232, 0.12);
+  color: rgba(201, 210, 232, 0.7);
+}
+
+.toggle-btn:hover {
+  color: #ffffff;
+  background: rgba(201, 210, 232, 0.08);
+  border-color: rgba(201, 210, 232, 0.2);
+  transform: translateY(-1px);
+}
+
+.toggle-btn.active {
+  background: linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-accent) 100%);
+  color: #020308;
+  font-weight: 700;
+  border-color: #ffffff;
+  box-shadow: 0 0 14px var(--color-glow-coral), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.toggle-btn.active .btn-dot {
+  background: #020308;
+  box-shadow: 0 0 6px rgba(2, 3, 8, 0.8);
+}
+
+.toggle-btn.active .btn-badge {
+  background: rgba(2, 3, 8, 0.25);
+  color: #020308;
+  font-weight: bold;
+}
+
+/* Star Chart Telemetry Ribbon */
+.star-chart-ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px var(--spacing-sm);
+  background: rgba(2, 3, 8, 0.65);
+  border-top: 1px solid rgba(201, 210, 232, 0.08);
+  font-size: 0.75rem;
+  gap: var(--spacing-sm);
+}
+
+.ribbon-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ribbon-label {
+  color: rgba(201, 210, 232, 0.5);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.ribbon-val {
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.filter-container {
+  margin-left: auto;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#sentinel-search {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--rounded-sm);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 4px 26px 4px 8px;
+  width: 170px;
+  outline: none;
+  box-shadow: var(--shadow-inset-well);
+  transition: var(--transition-smooth);
+}
+
+#sentinel-search:focus {
+  width: 220px;
+  border-color: var(--color-tertiary);
+  box-shadow: 0 0 10px var(--color-glow-coral), var(--shadow-inset-well);
+}
+
+#sentinel-search::placeholder {
+  color: rgba(201, 210, 232, 0.4);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 6px;
+  background: transparent;
+  border: none;
+  color: var(--color-secondary);
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 2px;
+}
+
+.hidden {
   display: none !important;
 }
 
-#artifact-drawer {
+.leaflet-div-icon,
+.observatory-custom-divicon {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* ==========================================================================
+   Map Viewport & Observatory Viewfinder Overlays
+   ========================================================================== */
+
+.map-viewport-wrapper {
+  position: relative;
+  flex: 1;
+  width: 100vw;
+  height: calc(100vh - 118px);
+  overflow: hidden;
+  background: var(--color-primary);
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  background: var(--color-primary) !important;
+  cursor: crosshair;
+}
+
+/* Star Chart Reticle Corner Brackets & Optical Grid */
+.reticle-frame {
   position: absolute;
-  top: 120px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.reticle-bracket {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: rgba(201, 210, 232, 0.35);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.reticle-bracket.top-left {
+  top: 16px;
+  left: 16px;
+  border-width: 2px 0 0 2px;
+}
+
+.reticle-bracket.top-right {
+  top: 16px;
+  right: 16px;
+  border-width: 2px 2px 0 0;
+}
+
+.reticle-bracket.bottom-left {
+  bottom: 84px;
+  left: 16px;
+  border-width: 0 0 2px 2px;
+}
+
+.reticle-bracket.bottom-right {
+  bottom: 84px;
+  right: 16px;
+  border-width: 0 2px 2px 0;
+}
+
+/* Star Compass HUD */
+.hud-compass {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 13, 24, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--rounded-sm);
+  padding: 5px 10px;
+  pointer-events: none;
+  box-shadow: var(--shadow-glass);
+}
+
+.compass-dial {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--color-tertiary);
+  position: relative;
+}
+
+.compass-dial::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  width: 2px;
+  height: 5px;
+  background: var(--color-tertiary);
+}
+
+.compass-label {
+  font-size: 0.68rem;
+  color: var(--color-secondary);
+  letter-spacing: 0.08em;
+}
+
+/* ==========================================================================
+   Leaflet UI Custom Overrides (Observatory Theme)
+   ========================================================================== */
+
+.leaflet-control-zoom {
+  border: 1px solid var(--color-border-subtle) !important;
+  box-shadow: var(--shadow-glass) !important;
+  border-radius: var(--rounded-md) !important;
+  overflow: hidden;
+  margin-top: 20px !important;
+  margin-left: 20px !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--color-surface-glass-heavy) !important;
+  backdrop-filter: blur(12px) !important;
+  color: var(--color-secondary) !important;
+  border-color: var(--color-border-subtle) !important;
+  transition: var(--transition-smooth) !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  font-size: 16px !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: var(--color-tertiary) !important;
+  color: #020308 !important;
+  font-weight: bold !important;
+}
+
+.leaflet-container {
+  font-family: var(--font-body) !important;
+}
+
+/* ==========================================================================
+   Custom Animated Observatory Marker Pins
+   Motion: 8/10 — Animated (Sonar Radar Ripple, Reticle Spin)
+   ========================================================================== */
+
+.observatory-pin-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+/* Animated Sonar Radar Wave */
+.pin-sonar {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-tertiary);
+  background: rgba(255, 106, 90, 0.15);
+  animation: marker-sonar 2.4s cubic-bezier(0.1, 0.7, 0.1, 1) infinite;
+  pointer-events: none;
+}
+
+.pin-ring {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px dashed rgba(201, 210, 232, 0.6);
+  animation: reticle-rotate 12s linear infinite;
+  pointer-events: none;
+}
+
+/* Solid Glowing Core */
+.pin-core {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-tertiary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px var(--color-glow-coral), inset 0 0 6px rgba(255, 106, 90, 0.3);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  z-index: 5;
+}
+
+.pin-symbol {
+  font-size: 10px;
+  color: var(--color-secondary);
+  line-height: 1;
+  user-select: none;
+}
+
+/* Hover Tooltip Card */
+.pin-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-surface-glass-heavy);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-bright);
+  border-radius: var(--rounded-sm);
+  padding: 4px 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  box-shadow: var(--shadow-glass);
+  transition: var(--transition-smooth);
+  z-index: 100;
+}
+
+.pin-tooltip-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.pin-tooltip-year {
+  font-size: 0.65rem;
+  color: var(--color-tertiary);
+}
+
+/* Hover & Active Marker Pin States */
+.observatory-pin-container:hover .pin-core,
+.observatory-pin-container.active-pin .pin-core {
+  transform: scale(1.3);
+  background: var(--color-tertiary);
+  border-color: #ffffff;
+  box-shadow: 0 0 20px var(--color-tertiary);
+}
+
+.observatory-pin-container:hover .pin-symbol,
+.observatory-pin-container.active-pin .pin-symbol {
+  color: #020308;
+  font-weight: bold;
+}
+
+.observatory-pin-container:hover .pin-tooltip,
+.observatory-pin-container.active-pin .pin-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   Sentinel Quick Navigator Dock (Star Chart Carousel)
+   ========================================================================== */
+
+.sentinel-navigator-dock {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 1100px;
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-glass);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  transition: var(--transition-smooth);
+}
+
+.dock-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(201, 210, 232, 0.08);
+  margin-bottom: 6px;
+}
+
+.dock-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dock-icon {
+  color: var(--color-tertiary);
+  font-size: 0.8rem;
+}
+
+.dock-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-secondary);
+}
+
+.dock-count {
+  font-size: 0.7rem;
+  color: var(--color-tertiary);
+}
+
+.dock-instructions {
+  font-size: 0.65rem;
+  color: rgba(201, 210, 232, 0.5);
+  letter-spacing: 0.08em;
+}
+
+.dock-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 0 4px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-subtle) transparent;
+}
+
+.dock-chips::-webkit-scrollbar {
+  height: 4px;
+}
+
+.dock-chips::-webkit-scrollbar-thumb {
+  background: var(--color-border-subtle);
+  border-radius: var(--rounded-sm);
+}
+
+.sentinel-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(2, 3, 8, 0.65);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--rounded-md);
+  color: var(--color-secondary);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  flex-shrink: 0;
+}
+
+.chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-tertiary);
+  box-shadow: 0 0 6px var(--color-glow-coral);
+}
+
+.chip-name {
+  font-weight: 500;
+}
+
+.chip-year {
+  font-size: 0.68rem;
+  color: rgba(201, 210, 232, 0.5);
+}
+
+.sentinel-chip:hover {
+  background: rgba(201, 210, 232, 0.12);
+  border-color: var(--color-border-bright);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(2, 3, 8, 0.7);
+}
+
+.sentinel-chip.active {
+  background: linear-gradient(135deg, rgba(255, 106, 90, 0.25) 0%, rgba(201, 90, 78, 0.15) 100%);
+  border-color: var(--color-tertiary);
+  color: #ffffff;
+  box-shadow: 0 0 12px var(--color-glow-coral);
+}
+
+/* ==========================================================================
+   Artifact Detail Dossier Drawer (Backdrop Filter + Neumorphism + Glass)
+   ========================================================================== */
+
+.observatory-drawer {
+  position: absolute;
+  top: 105px;
   right: 20px;
-  width: 330px;
-  background: #15192b;
-  border: 1px solid #4db6ac;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-  z-index: 1000;
+  bottom: 20px;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  background: var(--color-surface-glass-heavy);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid var(--color-border-bright);
+  border-radius: var(--rounded-lg);
+  box-shadow: var(--shadow-drawer);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, visibility 0.3s;
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  overflow: hidden;
+}
+
+.observatory-drawer.drawer-hidden {
+  transform: translateX(115%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Drawer Header */
+.drawer-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px var(--spacing-sm);
+  background: rgba(2, 3, 8, 0.7);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.dossier-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-tertiary);
+  letter-spacing: 0.1em;
+}
+
+.dossier-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-tertiary);
+  box-shadow: 0 0 8px var(--color-tertiary);
+  animation: status-pulse 1.8s infinite ease-in-out;
 }
 
 .close-btn {
-  background: transparent;
-  color: #fff;
-  border: none;
-  font-size: 1.2rem;
-  float: right;
+  background: rgba(201, 210, 232, 0.08);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--rounded-sm);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
   cursor: pointer;
+  transition: var(--transition-fast);
 }
 
-.badge {
-  background: #4db6ac;
-  color: #0b0f17;
-  padding: 2px 6px;
-  font-size: 0.7rem;
-  font-weight: bold;
-  border-radius: 3px;
+.close-btn:hover {
+  background: var(--color-tertiary);
+  border-color: #ffffff;
+  color: #020308;
+  box-shadow: 0 0 10px var(--color-glow-coral);
+  transform: scale(1.05);
+}
+
+/* Drawer Body (Scrollable with Neumorphic details) */
+.drawer-scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-subtle) transparent;
+}
+
+.drawer-scroll-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.drawer-scroll-body::-webkit-scrollbar-thumb {
+  background: var(--color-border-subtle);
+  border-radius: var(--rounded-sm);
+}
+
+/* Dossier Hero Header */
+.dossier-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.badge-cluster {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: var(--rounded-sm);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: rgba(255, 106, 90, 0.15);
+  border: 1px solid var(--color-tertiary);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 106, 90, 0.25);
+}
+
+.status-badge.status-active {
+  background: rgba(54, 227, 146, 0.15);
+  border-color: #36e392;
+  color: #79f5ba;
+  box-shadow: 0 0 8px rgba(54, 227, 146, 0.3);
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.mono-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 3px 8px;
+  border-radius: var(--rounded-sm);
+  background: rgba(2, 3, 8, 0.6);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-secondary);
+}
+
+.artifact-title {
+  font-family: var(--font-h1);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.artifact-headline {
+  font-size: 0.85rem;
+  color: var(--color-tertiary);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Artifact Visual Viewfinder */
+.artifact-visual-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lens-frame {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  border-radius: var(--rounded-md);
+  overflow: hidden;
+  background: var(--color-primary);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-inset-well);
 }
 
 .artifact-img {
   width: 100%;
-  height: 150px;
+  height: 100%;
   object-fit: cover;
-  border-radius: 4px;
-  margin: 8px 0;
+  transition: transform 0.5s ease;
 }
 
-.story-box,
+.lens-frame:hover .artifact-img {
+  transform: scale(1.06);
+}
+
+/* Corner Reticles inside image viewfinder */
+.lens-bracket {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--color-secondary);
+  border-style: solid;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.lens-bracket.tl { top: 6px; left: 6px; border-width: 1.5px 0 0 1.5px; }
+.lens-bracket.tr { top: 6px; right: 6px; border-width: 1.5px 1.5px 0 0; }
+.lens-bracket.bl { bottom: 6px; left: 6px; border-width: 0 0 1.5px 1.5px; }
+.lens-bracket.br { bottom: 6px; right: 6px; border-width: 0 1.5px 1.5px 0; }
+
+.lens-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, transparent 0%, rgba(201, 210, 232, 0.08) 50%, transparent 100%);
+  background-size: 100% 8px;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.7;
+}
+
+.lens-caption {
+  font-size: 0.65rem;
+  color: rgba(201, 210, 232, 0.5);
+  text-align: right;
+  letter-spacing: 0.06em;
+}
+
+/* Dossier Card Containers (Glass Effect + Neumorphism) */
+.dossier-card {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--rounded-md);
+  padding: 12px;
+  box-shadow: var(--shadow-inset-well);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.card-icon {
+  font-size: 0.9rem;
+}
+
+.card-title h4 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+}
+
+.story-box {
+  background: rgba(2, 3, 8, 0.65);
+  padding: 10px 12px;
+  border-radius: var(--rounded-sm);
+  border-left: 3px solid var(--color-tertiary);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(201, 210, 232, 0.9);
+  font-style: italic;
+}
+
 .science-box {
-  background: #0b0f17;
-  padding: 8px;
-  border-radius: 4px
+  background: rgba(2, 3, 8, 0.65);
+  padding: 10px 12px;
+  border-radius: var(--rounded-sm);
+  border-left: 3px solid var(--color-accent);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(201, 210, 232, 0.88);
+}
+
+/* Dossier Footer Navigation */
+.drawer-footer-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px var(--spacing-sm);
+  background: rgba(2, 3, 8, 0.85);
+  border-top: 1px solid var(--color-border-subtle);
+  gap: 8px;
+}
+
+.nav-step-btn {
+  background: rgba(201, 210, 232, 0.08);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--rounded-sm);
+  color: var(--color-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.nav-step-btn:hover {
+  background: rgba(201, 210, 232, 0.2);
+  color: #ffffff;
+  border-color: var(--color-border-bright);
+}
+
+.nav-focus-btn {
+  flex: 1;
+  background: linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-accent) 100%);
+  border: 1px solid #ffffff;
+  border-radius: var(--rounded-sm);
+  color: #020308;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 0 12px var(--color-glow-coral);
+}
+
+.nav-focus-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px var(--color-tertiary);
+  color: #000000;
+}
+
+/* ==========================================================================
+   Keyframes & Animations
+   Motion: 8/10 — Animated
+   ========================================================================== */
+
+@keyframes marker-sonar {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes reticle-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+@media (max-width: 960px) {
+  .header-main {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .star-chart-ribbon {
+    flex-wrap: wrap;
+  }
+
+  .map-viewport-wrapper {
+    height: calc(100vh - 190px);
+  }
+
+  .observatory-drawer {
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: calc(100% - 20px);
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .ribbon-item:nth-child(2),
+  .ribbon-item:nth-child(3) {
+    display: none;
+  }
+
+  .telemetry-pill {
+    display: none;
+  }
 }
