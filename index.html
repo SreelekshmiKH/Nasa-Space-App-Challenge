@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghost Fleet of the Solar System</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header>
+    <h1> GHOST FLEET ARCHAEOLOGY</h1>
+    <p>Exploring humanity's dormant scientific sentinels across space.</p>
+    <div class="toggle-buttons">
+      <button id="btn-moon" class="active" onclick="switchPlanet('moon')">The Moon</button>
+      <button id="btn-mars" onclick="switchPlanet('mars')">Mars</button>
+    </div>
+  </header>
+
+  <!-- Interactive Map Canvas -->
+  <div id="map"></div>
+
+  <!-- Artifact Detail Drawer / Modal -->
+  <div id="artifact-drawer" class="drawer hidden">
+    <button class="close-btn" onclick="closeDrawer()">✕</button>
+    <div id="drawer-content">
+      <!-- Content populated dynamically by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
